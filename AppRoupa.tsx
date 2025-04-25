@@ -34,32 +34,33 @@ const generationConfig = {
 
 export default function App() {
   const [load, setLoad] = useState(false);
-  const [receita, setReceita] = useState("");
-
-  const [ingr1, setIngr1] = useState("");
-  const [ingr2, setIngr2] = useState("");
-  const [ingr3, setIngr3] = useState("");
-  const [ingr4, setIngr4] = useState("");
+  const [look, setLook] = useState("");
+  const [roupa1, setRoupa1] = useState("");
+  const [roupa2, setRoupa2] = useState("");
+  const [roupa3, setRoupa3] = useState("");
+  const [roupa4, setRoupa4] = useState("");
+  const [temp, setTemp] = useState("");
   const [ocasiao, setOcasiao] = useState("");
 
-  async function gerarReceita() {
+  async function gerarLook() {
     if (
-      ingr1 === "" ||
-      ingr2 === "" ||
-      ingr3 === "" ||
-      ingr4 === "" ||
+      roupa1 === "" ||
+      roupa2 === "" ||
+      roupa3 === "" ||
+      roupa4 === "" ||
+      temp === "" ||
       ocasiao === ""
     ) {
-      Alert.alert("Atenção", "Informe todos os ingredientes!", [
-        { text: "Beleza!" },
+      Alert.alert("Atenção", "Informe todas as informações!", [
+        { text: "Beleza" },
       ]);
       return;
     }
-    setReceita("");
+    setLook("");
     setLoad(true);
     Keyboard.dismiss();
 
-    const prompt = `Sugira uma receita detalhada para o ${ocasiao} usando os ingredientes: ${ingr1}, ${ingr2}, ${ingr3} e ${ingr4} e pesquise a receita no YouTube. Caso encontre, informe o link.`;
+    const prompt = `Sugira um look adequado para o ${ocasiao} usando as peças de roupa: ${roupa1}, ${roupa2}, ${roupa3} e ${roupa4} e pesquise os looks no TikTok. Caso encontre, informe o link.`;
 
     try {
       const chatSession = model.startChat({
@@ -68,7 +69,7 @@ export default function App() {
       });
 
       const result = await chatSession.sendMessage(prompt);
-      setReceita(result.response.text());
+      setLook(result.response.text());
     } catch (error) {
       console.error(error);
     } finally {
@@ -83,43 +84,49 @@ export default function App() {
         translucent={true}
         backgroundColor="#F1F1F1"
       />
-      <Text style={ESTILOS.header}>Cozinha fácil</Text>
+      <Text style={ESTILOS.header}>Armario Digital</Text>
       <View style={ESTILOS.form}>
-        <Text style={ESTILOS.label}>Insira os ingredientes abaixo:</Text>
+        <Text style={ESTILOS.label}>Insira as informações:</Text>
         <TextInput
-          placeholder="Ingrediente 1"
+          placeholder="Peça de roupa1"
           style={ESTILOS.input}
-          value={ingr1}
-          onChangeText={(texto) => setIngr1(texto)}
+          value={roupa1}
+          onChangeText={(texto) => setRoupa1(texto)}
         />
         <TextInput
-          placeholder="Ingrediente 2"
+          placeholder="Peça de roupa2"
           style={ESTILOS.input}
-          value={ingr2}
-          onChangeText={(texto) => setIngr2(texto)}
+          value={roupa2}
+          onChangeText={(texto) => setRoupa2(texto)}
         />
         <TextInput
-          placeholder="Ingrediente 3"
+          placeholder="Peça de roupa3"
           style={ESTILOS.input}
-          value={ingr3}
-          onChangeText={(texto) => setIngr3(texto)}
+          value={roupa3}
+          onChangeText={(texto) => setRoupa3(texto)}
         />
         <TextInput
-          placeholder="Ingrediente 4"
+          placeholder="Peça de roupa4"
           style={ESTILOS.input}
-          value={ingr4}
-          onChangeText={(texto) => setIngr4(texto)}
+          value={roupa4}
+          onChangeText={(texto) => setRoupa4(texto)}
         />
         <TextInput
-          placeholder="Almoço ou Jantar"
+          placeholder="Temperatura"
+          style={ESTILOS.input}
+          value={temp}
+          onChangeText={(texto) => setTemp(texto)}
+        />
+        <TextInput
+          placeholder="Ocasião"
           style={ESTILOS.input}
           value={ocasiao}
           onChangeText={(texto) => setOcasiao(texto)}
         />
       </View>
 
-      <TouchableOpacity style={ESTILOS.button} onPress={gerarReceita}>
-        <Text style={ESTILOS.buttonText}>Gerar receita</Text>
+      <TouchableOpacity style={ESTILOS.button} onPress={gerarLook}>
+        <Text style={ESTILOS.buttonText}>Gerar Look</Text>
         <MaterialCommunityIcons name="food-variant" size={24} color="#FFF" />
       </TouchableOpacity>
 
@@ -130,15 +137,15 @@ export default function App() {
       >
         {load && (
           <View style={ESTILOS.content}>
-            <Text style={ESTILOS.title}>Produzindo receita...</Text>
+            <Text style={ESTILOS.title}>Fazendo seu look...</Text>
             <ActivityIndicator color="#000" size="large" />
           </View>
         )}
 
-        {receita && (
+        {look && (
           <View style={ESTILOS.content}>
-            <Text style={ESTILOS.title}>Sua receita 👇</Text>
-            <Text style={{ lineHeight: 24 }}>{receita}</Text>
+            <Text style={ESTILOS.title}>Seu Look 👇</Text>
+            <Text style={{ lineHeight: 24 }}>{look}</Text>
           </View>
         )}
       </ScrollView>
